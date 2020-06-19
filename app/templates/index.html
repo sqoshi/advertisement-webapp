@@ -2,6 +2,8 @@
 
 {% block content %}
     <h1>Hi, {{ current_user.username }}!</h1>
+    <p><a href="{{ url_for('add_announcement') }}">Add new announcement</a></p>
+
     <h2>Actual list of announcements</h2>
     {% for post in posts %}
         <div>

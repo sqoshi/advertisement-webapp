@@ -11,8 +11,8 @@ from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import EditProfileForm
 from app.forms import LoginForm
-from app.forms import RegistrationForm
-from app.models import User
+from app.forms import RegistrationForm, AnnouncementForm
+from app.models import User, Announcement
 
 
 @app.route('/')
@@ -23,7 +23,6 @@ def index():
     result = db.engine.execute(text("select * from user"))
     for row in result:
         usrs[row.id] = row.username
-    print(usrs)
     result = db.engine.execute(text("select * from announcement"))
     anns = []
     for row in result:
@@ -34,6 +33,7 @@ def index():
         element['price'] = row.price
         element['timestamp'] = row.timestamp
         anns.append(element)
+
     return render_template("index.html", title='Ads', posts=anns)
 
 
@@ -106,4 +106,20 @@ def edit_profile():
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
     return render_template('edit_profile.html', title='Edit Profile',
+                           form=form)
+
+
+@app.route('/add_announcement', methods=['GET', 'POST'])
+@login_required
+def add_announcement():
+    form = AnnouncementForm()
+    if form.validate_on_submit():
+        print(current_user.id)
+        u = Announcement(body=form.body.data, name=form.name.data, price=form.price.data, user_id=current_user.id)
+        print(form.body)
+        db.session.add(u)
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('add_announcement'))
+    return render_template('add_announcement.html', title='Add Announce',
                            form=form)
