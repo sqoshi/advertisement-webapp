@@ -4,6 +4,17 @@
     <h1>Hi, {{ current_user.username }}!</h1>
     <h2>Actual list of announcements</h2>
     {% for post in posts %}
-    <div><p>{{ post.author.username }} says: <b>{{ post.body }}</b></p></div>
+        <div>
+            <hr style="width:100%;text-align:left;margin-left:0">
+            <tr valign="top">
+                <img src="{{ current_user.avatar(56) }}" align="left">
+                Użytkownik <b>{{ post.author.username }}</b> [ {{ post.timestamp }} ] <br>Wystawił przedmiot
+                <b>{{ post.name }}</b>
+                w cenie <b>{{ post.price }} zł</b>
+                <p>Treść ogłoszenia:</p>
+                <center><b>{{ post.body }}</b></center>
+            </tr>
+            <hr style="width:100%;text-align:left;margin-left:0">
+        </div>
     {% endfor %}
 {% endblock %}

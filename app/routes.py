@@ -19,31 +19,22 @@ from app.models import User
 @app.route('/index')
 @login_required
 def index():
-    """    id = db.Column(db.Integer, primary_key=True)
-    body = db.Column(db.String(140))
-    price = db.Column(db.Integer)
-    timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))"""
-    posts = [
-        {
-            'author': {'username': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'username': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
-
-    result = db.engine.execute(text('select * from user'))
     usrs = dict()
-    dan = [row for row in result]
-    for row in dan:
-        usrs['id'] = row.id
-        usrs['nam'] = row.username
+    result = db.engine.execute(text("select * from user"))
+    for row in result:
+        usrs[row.id] = row.username
     print(usrs)
-
-    return render_template("index.html", title='Home Page', posts=posts)
+    result = db.engine.execute(text("select * from announcement"))
+    anns = []
+    for row in result:
+        element = dict()
+        element['author'] = {'username': usrs[row.id]}
+        element['body'] = row.body
+        element['name'] = row.name
+        element['price'] = row.price
+        element['timestamp'] = row.timestamp
+        anns.append(element)
+    return render_template("index.html", title='Ads', posts=anns)
 
 
 @app.route('/login', methods=['GET', 'POST'])
