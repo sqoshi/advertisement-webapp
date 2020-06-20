@@ -323,6 +323,7 @@ def post_ovr():
     :return:
     """
     args = request.json
+    print(args)
     if args:
         a = Announcement(**args)
         db.session.add(a)
