@@ -303,3 +303,30 @@ def put_anon(idx):
         db.session.commit()
         return make_response(jsonify({'url': 'http://127.0.0.1:5000/anns/' + idx}), 201)
     return abort(400)
+
+
+@app.route('/anns', methods=['GET'])
+def get_all_anon():
+    """
+    Return all announces in database.
+    :return:
+    """
+    st = Announcement.query.all()
+    anns = [{'name': r.name, 'id': r.id, 'price': r.price, 'body': r.body, 'user_id': r.user_id} for r in st]
+    return jsonify(anns)
+
+
+@app.route('/anns', methods=['POST'])
+def post_ovr():
+    """
+    Add announce in database without id by /anns.
+    :return:
+    """
+    args = request.json
+    if args:
+        a = Announcement(**args)
+        db.session.add(a)
+        db.session.commit()
+        args['id'] = a.id
+        return make_response(jsonify(args), 201)
+    return abort(404)

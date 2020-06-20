@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+    <body style="margin-top: 100px">
+    <table style="width: 60%;top:30%;bottom:30%;left:20%;right:-70%;position: relative;border:solid white">
+        <tr>
+            <td colspan="3" style="width: 30%;background:wheat">#{{ test.id }}</td>
+            <td colspan="3" style="width: 20%;background:wheat">Użytkownik: {{ user.name }}</td>
+            <td colspan="4" style="width: 20%;background:wheat">Dnia: {{ user.timestamp }}</td>
+        </tr>
+        <tr>
+            <td colspan="5" style="width: 66%;background:wheat">Przedmiot: {{ test.name }}</td>
+            <td colspan="3" style="width: 30%;background:wheat">Kontakt: {{ user.email }}</td>
+            <td colspan="2" style="width: 15%;background:wheat">
+                Price: <br>{{ test.price }}</td>
+        </tr>
+        <tr>
+            <td colspan="10" rowspan="10" style="width: 80%;background:wheat"> Treść: <br>{{ test.body }}
+            </td>
+        </tr>
+    </table>
+    </body>
+{% endblock %}
