@@ -1,0 +1,89 @@
+
+.button {
+    border-radius: 15px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 6% 12%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+
+.profile {
+    margin-left: -40%;
+}
+
+.speech-bubble {
+    margin-left: -50%;
+    position: relative;
+    background: #00aabb;
+    border-radius: .6em;
+    margin-bottom: 2%;
+    border-color: black;
+    border-style: solid;
+    color: white;
+    width: 140%;
+}
+
+img {
+
+    vertical-align: middle;
+}
+
+
+.profile_name {
+    vertical-align: middle;
+    display: inline-block;
+}
+
+
+.speech-bubble:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 1.625em solid transparent;
+    border-right-color: black;
+    border-top-width: 0em;
+    border-left-width: 0;
+    margin-top: -2.312em;
+    margin-left: -1.625em;
+}
+
+.blink {
+    animation: blinker 0.6s linear infinite;
+    color: red;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}
+
+.blink-one {
+    animation: blinker-one 1s linear infinite;
+}
+
+@keyframes blinker-one {
+    0% {
+        opacity: 0;
+    }
+}
+
+.blink-two {
+    animation: blinker-two 1.4s linear infinite;
+}
+
+@keyframes blinker-two {
+    100% {
+        opacity: 0;
+    }
+}

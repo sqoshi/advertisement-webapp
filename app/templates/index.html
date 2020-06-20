@@ -1,22 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Hi, {{ current_user.username }}!</h1>
-    <p><a href="{{ url_for('add_announcement') }}">Add new announcement</a></p>
-
-    <h2>Actual list of announcements</h2>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/index.css') }}">
+    <hr>
+    <div class="row">
+        <div class="col">
+            <h1>Miło cię znowu widzieć, {{ current_user.username }}!</h1>
+            <h5>Na stronie pojawiły się nowe ogłoszenia.</h5>
+        </div>
+        <div class="col"><p><a href="{{ url_for('add_announcement') }}" class="button">Dodaj nowe ogłoszenie</a></p>
+        </div>
+    </div>
+    <hr style="width:100%;text-align:left;margin-left:0">
+    <center><h2>Aktualna lista ogłoszeń</h2></center>
     {% for post in posts %}
-        <div>
-            <hr style="width:100%;text-align:left;margin-left:0">
-            <tr valign="top">
-                <img src="{{ current_user.avatar(56) }}" align="left">
-                Użytkownik <b>{{ post.author.username }}</b> [ {{ post.timestamp }} ] <br>Wystawił przedmiot
-                <b>{{ post.name }}</b>
-                w cenie <b>{{ post.price }} zł</b>
-                <p>Treść ogłoszenia:</p>
-                <center><b>{{ post.body }}</b></center>
-            </tr>
-            <hr style="width:100%;text-align:left;margin-left:0">
+        <div class="row">
+            <div class="col">
+                <div class="profile">
+                    <img src="{{ current_user.avatar(56) }}">
+                    <div class="profile_name">{{ post.timestamp }}
+                        <br><b> {{ post.author.username }} </b>{{ current_user.email }}</div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="speech-bubble">
+                    <br>
+                    Wystawił przedmiot
+                    <a class=blink>{{ post.name }}</a>
+                    <br> w cenie <b>{{ post.price }} zł</b></br>
+                    <br><center><b>{{ post.body }}</b></center>
+                    <br>
+                </div>
+            </div>
         </div>
     {% endfor %}
 {% endblock %}

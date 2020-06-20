@@ -1,0 +1,15 @@
+.small_btn {
+    border-radius: 5px;
+    background-color: #4CAF50;
+    border: black;
+    color: white;
+    padding: 2% 5%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.small_btn:hover {
+    background-color: #bbbbbb;
+}

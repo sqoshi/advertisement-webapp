@@ -1,8 +1,9 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField,IntegerField
-from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
+from wtforms import PasswordField, BooleanField, IntegerField
 from wtforms import StringField, TextAreaField, SubmitField
 from wtforms.validators import DataRequired, Length
+from wtforms.validators import ValidationError, Email, EqualTo
+
 from app.models import User
 
 
@@ -12,12 +13,27 @@ class LoginForm(FlaskForm):
     remember_me = BooleanField('Remember Me')
     submit = SubmitField('Sign In')
 
+
+class DeleteAnnForm(FlaskForm):
+    id = StringField('Username', validators=[DataRequired()])
+    submit = SubmitField('Sign In')
+
+
 class AnnouncementForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     price = IntegerField('Price', validators=[DataRequired()])
     body = TextAreaField('Body', validators=[Length(min=0, max=140)])
     phone = StringField('Phone Number')
-    submit = SubmitField('Add new annonce')
+    submit = SubmitField(' Add')
+
+
+class EditAnnForm(FlaskForm):
+    id = IntegerField('ID', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
+    price = IntegerField('Price', validators=[DataRequired()])
+    body = TextAreaField('Body', validators=[Length(min=0, max=140)])
+    phone = StringField('Phone Number')
+    submit = SubmitField(' Edit')
 
 
 class RegistrationForm(FlaskForm):

@@ -43,4 +43,12 @@ class Announcement(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
     def __repr__(self):
-        return '<Post {}>'.format(self.body)
+        return '<Ann {}>'.format(self.body)
+
+    def getAnnouncesAll(self):
+        return self.root.findall("./anns")
+
+    def remove_Ann(self, idx):
+        for ann in self.root.findall('./anime'):
+            if ann[1].text == idx:
+                self.root.remove(ann)

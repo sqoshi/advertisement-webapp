@@ -1,11 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/user.css') }}">
     <table>
         <tr valign="top">
-            <td><img src="{{ user.avatar(128) }}"></td>
+            <hr>
+            <td><img src="{{ user.avatar(158) }}"></td>
             <td>
-                <h1>User: {{ user.username }}</h1>
+                <h1> {{ user.username }}</h1>
+                <p>{{ user.email }}</p>
                 {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
                 {% if user.last_seen %}<p>Last seen on: {{ user.last_seen }}</p>{% endif %}
                 {% if user == current_user %}
@@ -15,7 +18,28 @@
         </tr>
     </table>
     <hr>
+    <center><h1>Twoje ogłoszenia</h1></center>
+    <hr>
+
+    <div class="row">
+        <div class="col">
+            <p><a href="{{ url_for('add_announcement') }}" class="small_btn">Dodaj ogłoszenie</a></p>
+        </div>
+        <div class="col">
+            <p><a href="{{ url_for('edit_announcement') }}" class="small_btn">Edytuj ogłoszenie</a></p>
+        </div>
+        <div class="col">
+            <form action="{{ url_for('delete_announcement',username=current_user.username) }}"
+                  method=POST
+                  class=small_btn> Usuń ogłoszenie
+                <input type="text" name="zxc">
+                <input type="submit">
+            </form>
+        </div>
+    </div>
+    <hr>
     {% for post in posts %}
         {% include '_announcement.html' %}
     {% endfor %}
 {% endblock %}
+

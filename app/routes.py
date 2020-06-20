@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from flask import flash, redirect, url_for
-from flask import render_template
+from flask import flash, redirect, url_for, jsonify
+from flask import render_template, abort, make_response
 from flask import request
 from flask_login import current_user, login_user, logout_user
 from flask_login import login_required
@@ -11,7 +11,7 @@ from werkzeug.urls import url_parse
 from app import app, db
 from app.forms import EditProfileForm
 from app.forms import LoginForm
-from app.forms import RegistrationForm, AnnouncementForm
+from app.forms import RegistrationForm, AnnouncementForm, EditAnnForm
 from app.models import User, Announcement
 
 
@@ -27,7 +27,7 @@ def index():
     anns = []
     for row in result:
         element = dict()
-        element['author'] = {'username': usrs[row.id]}
+        element['author'] = {'username': usrs[row.user_id]}
         element['body'] = row.body
         element['name'] = row.name
         element['price'] = row.price
@@ -52,7 +52,7 @@ def login():
         if not next_page or url_parse(next_page).netloc != '':
             next_page = url_for('index')
         return redirect(next_page)
-    return render_template('login.html', title='Sign In', form=form)
+    return render_template('login.html', title='Zaloguj', form=form)
 
 
 @app.route('/logout')
@@ -73,10 +73,10 @@ def register():
         db.session.commit()
         flash('Congratulations, you are now a registered user!')
         return redirect(url_for('login'))
-    return render_template('register.html', title='Register', form=form)
+    return render_template('register.html', title='Rejestracja', form=form)
 
 
-@app.route('/user/<username>')
+@app.route('/user/<username>', methods=['GET', 'PUT'])
 @login_required
 def user(username):
     u = User.query.filter_by(username=username).first_or_404()
@@ -105,7 +105,7 @@ def edit_profile():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
-    return render_template('edit_profile.html', title='Edit Profile',
+    return render_template('edit_profile.html', title='Edytuj Profil',
                            form=form)
 
 
@@ -114,12 +114,103 @@ def edit_profile():
 def add_announcement():
     form = AnnouncementForm()
     if form.validate_on_submit():
-        print(current_user.id)
         u = Announcement(body=form.body.data, name=form.name.data, price=form.price.data, user_id=current_user.id)
-        print(form.body)
         db.session.add(u)
         db.session.commit()
         flash('Your changes have been saved.')
         return redirect(url_for('add_announcement'))
-    return render_template('add_announcement.html', title='Add Announce',
+    return render_template('add_announcement.html', title='Dodaj ogłoszenie',
                            form=form)
+
+
+@app.route('/edit_announcement', methods=['GET', 'POST'])
+@login_required
+def edit_announcement():
+    form = EditAnnForm()
+    if form.validate_on_submit():
+        Announcement.query.filter_by(user_id=current_user.id).filter_by(id=form.id.data).update(
+            dict(body=form.body.data, name=form.name.data, price=form.price.data))
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('edit_announcement'))
+    return render_template('edit_announcement.html', title='Edytuj ogłoszenie',
+                           form=form)
+
+
+@app.route('/user/<username>', methods=['POST'])
+@login_required
+def delete_announcement(username, flag=False):
+    rs = db.engine.execute('select id from user where username =:u', u=username)
+    z = None
+    for x in rs:
+        if int(x[0]) == x[0]:
+            z = x[0]
+    if z:
+        val = request.form['zxc']
+        db.engine.execute('delete from announcement where id =:v and user_id =:ui', ui=z, v=val)
+        db.session.commit()
+        del z
+    if not flag:
+        return user(username)
+
+
+#################################################
+@app.route('/user/<username>', methods=['DELETE'])
+def delete_account(username):
+    try:
+        rs = db.engine.execute('select id from user where username =:u', u=username)
+        z = None
+        for x in rs:
+            if int(x[0]) == x[0]:
+                z = x[0]
+        if z:
+            db.engine.execute('delete from announcement where user_id =:v', v=z)
+            db.session.commit()
+            db.engine.execute('delete from user where id =:ui', ui=z)
+            db.session.commit()
+        return make_response(' ', 204)
+    except:
+        return abort(409)
+
+
+@app.route('/user/<username>', methods=['GET'])
+def get_account(username):
+    try:
+        rs = db.engine.execute('select * from user where username =:u', u=username)
+        db.session.commit()
+        return jsonify(rs)
+    except:
+        return abort(400)
+
+
+######################
+
+@app.route('/anns/<idx>', methods=['GET'])
+def get_anon(idx):
+    try:
+        rs = db.engine.execute('select * from announcement where id =:u', u=idx).first()
+        r = [x for x in rs]
+        d = dict(id=r[0], name=r[-1], timestamp=r[3], body=r[1], price=r[2], user_id=r[-2])
+        return jsonify(d)
+    except:
+        return abort(400)
+
+
+@app.route('/anns/<idx>', methods=['DELETE'])
+def del_anon(idx):
+    try:
+        db.engine.execute('delete from announcement where id =:u', u=idx)
+        return make_response(' ', 204)
+    except:
+        return abort(409)
+
+
+@app.route('/anns/<idx>', methods=['POST'])
+def post_anon(idx):
+    args = request.json
+    if args:
+        a = Announcement(**args)
+        db.session.add(a)
+        db.session.commit()
+        return make_response(jsonify({'url': 'http://127.0.0.1:5000/anns/' + idx}), 201)
+    return abort(400)

@@ -6,6 +6,13 @@
             <h1>Dodaj ogłoszenie</h1>
             <hr>
             {{ form.hidden_tag() }}
+                    <p>
+                {{ form.id.label }}<br>
+                {{ form.id(size=32) }}<br>
+                {% for error in form.id.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
             <p>
                 {{ form.name.label }}<br>
                 {{ form.name(size=32) }}<br>
