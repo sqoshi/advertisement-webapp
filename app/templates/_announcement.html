@@ -1,10 +1,12 @@
-<table >
-    <tr valign="top">
-        <td><img src="{{ user.avatar(72) }}"></td>
-        <td><b> ID Ogłoszenia: #</b>
-            {{ post.id }} <input type="radio" name="valuer" value={{ post.id }}>
-            <br> <b> Data Wstawienia: </b> {{ post.timestamp }}
-            <br> <b>Przedmiot: </b>{{ post.name }}
-            <br><b> Cena: </b> {{ post.price }} <br><b> Treść:</b> {{ post.body }}<br/><br/><br/></td>
-    </tr>
-</table>
+<div style="cursor: pointer;" onclick="window.location='{{ url_for('get_anon',idx=post.id) }}';">
+    <table>
+        <tr valign="top">
+            <td><img src="{{ user.avatar(72) }}"></td>
+            <td><b> ID Ogłoszenia: #</b>
+                {{ post.id }} <input type="radio" name="valuer" value={{ post.id }}>
+                <br> <b>Przedmiot: </b>{{ post.name }}
+                <br><b> Cena: </b> {{ post.price }} <br><b> Treść:</b> {{ post.body }}<br/><br/><br/></td>
+        </tr>
+        <hr>
+    </table>
+</div>

@@ -18,18 +18,21 @@
             <div class="col">
                 <div class="profile">
                     <img src="{{ current_user.avatar(56) }}">
-                    <div class="profile_name">{{ post.timestamp }}
-                        <br><b> {{ post.author.username }} </b>{{ current_user.email }}</div>
+                    <div class="profile_name"><a style="font-size:120%"><b>{{ post.author.username }}</b></a> <a
+                            style="font-size:60%">{{ post.timestamp }}</a>
+                        <br> <a style="font-size:85% ;color:yellow">{{ post.author.email }}</a></div>
                 </div>
             </div>
 
             <div class="col">
-                <div class="speech-bubble">
+                <div style="cursor: pointer;" onclick="window.location='{{ url_for('get_anon',idx=post.id) }}';"
+                     class="speech-bubble">
                     <br>
                     Wystawił przedmiot
                     <a class=blink>{{ post.name }}</a>
                     <br> w cenie <b>{{ post.price }} zł</b></br>
-                    <br><center><b>{{ post.body }}</b></center>
+                    <br>
+                    <center><b>{{ post.body }}</b></center>
                     <br>
                 </div>
             </div>
