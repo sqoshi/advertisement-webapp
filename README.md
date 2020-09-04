@@ -4,6 +4,7 @@
 2. [ Code Example ](#Code-Example)
 3. [ Motivation ](#Motivation)
 4. [ Installation ](#Installation)
+4. [ Launch ](#Launch)
 5. [ Tests ](#Tests)
 6. [ License ](#License)
 
@@ -45,6 +46,10 @@ new things. To create place where people can advertise their services, companies
 ## Installation
 
 Flask and python are only needed to use this app.
+
+## Launch
+
+`python -m flask run`
 
 ## Technologies
 - Python
