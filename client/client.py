@@ -29,7 +29,7 @@ test_modified = {
     "user_id": 2
 }
 ann_id = 174  # new announce id
-URL = "http://127.0.0.1:5000/" + '/anns/' + str(ann_id)
+URL = "http://127.0.0.1:5000/" + 'anns/' + str(ann_id)
 
 
 ##### MANUAL
@@ -101,6 +101,7 @@ def main():
             return post.text
         else:
             sys.stderr.write('METHOD --url URL(IFNOT127...) --filename FILENAME --index ID')
+            return
     else:
         sys.stderr.write('METHOD --url URL(IFNOT127...) --filename FILENAME --index ID')
 
