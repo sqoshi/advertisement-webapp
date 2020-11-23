@@ -3,10 +3,11 @@
 1. [ Synopsis ](#Synopsis)
 2. [ Code Example ](#Code-Example)
 3. [ Motivation ](#Motivation)
-4. [ Installation ](#Installation)
-4. [ Launch ](#Launch)
-5. [ Tests ](#Tests)
-6. [ License ](#License)
+4. [ Screenshots ](#Screenshots)
+5. [ Installation ](#Installation)
+6. [ Launch ](#Launch)
+7. [ Tests ](#Tests)
+8. [ License ](#License)
 
 
 ## Synopsis
@@ -42,6 +43,9 @@ def add_announcement():
 
 Application have been created to make place where people can sell their stuff, buy some
 new things. To create place where people can advertise their services, companies or even private lessons.
+
+## Screenshots
+![Alt text](screen.png?raw=true "Title")
 
 ## Installation
 
