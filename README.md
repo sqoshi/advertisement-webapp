@@ -45,7 +45,7 @@ Application have been created to make place where people can sell their stuff, b
 new things. To create place where people can advertise their services, companies or even private lessons.
 
 ## Screenshots
-![Alt text](screen.png?raw=true "Title")
+![](screen.png?raw=true "Title")
 
 ## Installation
 
